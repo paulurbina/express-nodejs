@@ -1,21 +1,14 @@
+<div class="row">
 {{#each products}}
-<div class="columns">
-    <div class="column is-half is-offset-one-fifth">
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="{{image}}" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-
-                <div class="content">
-                    <p>{{name}}</p>
-                    <p>{{description}}</p>
-                    <a class="button is-link is-fullwidth" href="">Add to card - Precio: $/. {{precio}}</a>
-                </div>
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <img src="{{image}}" style="object-fit: cover;" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{name}}</h5>
+                <p class="card-text">{{price}}</p>
+                <a href="#" class="btn btn-primary">Add cart</a>
             </div>
         </div>
     </div>
-</div>
 {{/each}}
+</div>

@@ -1,92 +1,94 @@
-const express = require('express')
-const router = express.Router()
-
+const { Router } = require('express')
+const router = Router()
 const ProductsService = require('../../services/products')
-const { createProductSchema, productTagSchema, updateProductSchema, productIdSchema } = require('../../utils/schemas/products')
-const validation = require('../../utils/middlewares/validationHandler')
-const productServices = new ProductsService()
+
+const validation  = require('../../utils/middlewares/validationHandler')
+const {
+    createProductSchema,
+    updateProductSchema,
+    productIdSchema,
+    productTagSchema
+} = require('../../utils/schemas/products')
+
+const productsService = new ProductsService() 
 
 router.get('/', async (req, res, next) => {
     try {
         const { tags } = req.query
-        const getProducts = await productServices.getProducts({ tags })
 
+        const products = await productsService.getProducts({ tags })
+    
         res.status(200).json({
-            data: getProducts,
-            message: 'Product list'
-        })
-    } catch (error) {
-        next(error)
+            data: products,
+            message: 'products listed'
+        })    
+    } catch (err) {
+        next(err)
     }
+    
 })
 
-
-router.get('/:productId', async (req, res) => {
+router.get('/:productId', async (req, res, next) => {
     try {
         const { productId } = req.params
-
-        const getProductId =  await productServices.getProductsId({ productId })
-
+    
+        const products = await productsService.getProduct({ productId })
+        
         res.status(200).json({
-            data: getProductId,
-            message: 'Product with id'
+            data: products,
+            message: 'products unique show'
         })
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
+    
 })
 
-router.post('/', validation(createProductSchema) ,async (req, res) => {
-
+router.post('/', validation(createProductSchema), async (req, res, next) => {
     try {
         const { body: product } = req
-
-        const createProduct = await productServices.createProducts({ product })
-
+        const createProduct = await productsService.createProduct({ product })
+        
         res.status(201).json({
             data: createProduct,
-            message: 'Product created!'
+            message: 'products created'
         })
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
+   
 })
-
 
 router.put('/:productId', 
-    validation({ productId: productIdSchema }, "params") ,
-    validation(updateProductSchema),
+        validation({ productId: productIdSchema }, "params"),
+        validation(updateProductSchema), async (req, res, next) => {
     
-    async (req, res) => {
-
-    try {
+        try {
         const { productId } = req.params
         const { body: product } = req
+        const updateProduct = await productsService.updateProduct({ productId, product })
 
-        const updateProduct = await productServices.updateProducts({ productId, product })
-
-        res.status(201).json({
+        res.status(200).json({
             data: updateProduct,
-            message: 'Product updated!'
+            message: 'products updated'
         })
-    } catch (error) {
-        next(error)
+    } catch (err) {
+        next(err)
     }
 })
 
-router.delete('/:productId', async (req, res) => {
-
-    try {
-        const { productId } = req.params
-
-        const deleteProduct = await productServices.deleteProducts({ productId })
-        res.status(200).json({
-            data: deleteProduct,
-            message: 'Product delete'
-        })
-    } catch (error) {
-        next(error)
-    }
+router.delete('/:productId', async (req, res, next) => {
+  try {
+    const { productId } = req.params
+    const product = await productsService.deleteProduct({ productId })
+    
+    res.status(200).json({
+        data: product,
+        message: 'products deleted'
+    })
+  } catch (err) {
+      next(err)
+  }
 })
 
 module.exports = router

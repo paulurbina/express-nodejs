@@ -1,18 +1,18 @@
 const Joi = require('@hapi/joi')
 
-const productIdSchema = Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/)
+const productIdSchema = Joi.string().regex(/^[0-9a-fA-F]{24}$/)
 const productTagSchema = Joi.array().items(Joi.string().max(10))
 
 const createProductSchema = {
     name: Joi.string().max(50).required(),
-    price: Joi.number().min(1).max(99999),
+    price: Joi.number().min(1).max(1000000000),
     image: Joi.string().required(),
     tags: productTagSchema
 }
 
 const updateProductSchema = {
     name: Joi.string().max(50),
-    price: Joi.number().min(1).max(9999999),
+    price: Joi.number().min(1).max(1000000000),
     image: Joi.string(),
     tags: productTagSchema
 }

@@ -1,17 +1,14 @@
-const productsMocks = [
+const productMocks = [
     {
-        name: 'refrigeradora',
-        precio: 100,
-        image: 'https://picsum.photos/id/767/400/300?grayscale',
-        description: `Aqui ira una descripcion de refrigeradora`
+        name: "polo",
+        price: 19,
+        image: "https://picsum.photos/id/127/400/400"
     },
     {
-        name: 'cocina',
-        precio: 200,
-        image: 'https://picsum.photos/id/767/400/300',
-        description: `Aqui ira una descripcion de cocina`
-
+        name: "pantalon",
+        price: 45,
+        image: "https://picsum.photos/id/227/400/400"
     }
 ]
 
-module.exports = productsMocks
+module.exports = productMocks
