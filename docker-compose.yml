@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+    nodejs:
+        container_name: nodejs
+        restart: always
+        build: ./
+        image: nodejs
+        env_file: .env
+        environment: 
+            - DB_USER=$DB_USER
+            - DB_PASSWORD=$DB_PASSWORD
+            - DB_HOST=$DB_HOST
+            - DB_PORT=$DB_PORT
+            - DB_NAME=$DB_NAME
+        ports: 
+            - "3000:9090"
+        volumes: 
+            - .:/app
+            - node_modules:/home/node/app/node_modules
+        links: 
+            - db
+        networks: 
+            - app-network
+
+    db:
+        image: mongo:4.1.8-xenial
+        container_name: db
+        restart: always
+        ports: 
+            - "27017:27017"
+        env_file: .env
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=$DB_USER
+            - MONGO_INITDB_ROOT_PASSWORD=$DB_PASSWORD
+        volumes: 
+            - dbdata:/data/db
+        networks: 
+            - app-network
+
+networks: 
+    app-network:
+        driver: bridge
+
+volumes: 
+    dbdata:
+    node_modules:

@@ -18,6 +18,7 @@ const isRequestAjaxApi = require('./utils/isRequestAjaxApi')
 
 //app
 const app = express()
+const port = process.env.PORT || 3000
 
 // middllewares
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -64,7 +65,8 @@ app.use(wrapErrors)
 app.use(clientErrorHandler)
 app.use(errorHandler)
 
+
 // server
-const server = app.listen(3000, () => {
+const server = app.listen(port, () => {
     console.log(`server listenin ${server.address().port}`);
 })
